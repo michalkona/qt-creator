@@ -37,6 +37,7 @@ private:
     QString m_pemicroTargetIfaceSpeed = {"12000"};
     QString m_additionalArguments;
     
+    friend class PEMicroGdbServerProviderConfigWidget;
     friend class PEMicroGdbServerProviderFactory;
 };
 
@@ -45,6 +46,42 @@ class PEMicroGdbServerProviderFactory final
 {
 public:
     PEMicroGdbServerProviderFactory();
+};
+
+class PEMicroGdbServerProviderConfigWidget final
+    : public GdbServerProviderConfigWidget
+{
+    Q_OBJECT
+
+public:
+    explicit PEMicroGdbServerProviderConfigWidget(PEMicroGdbServerProvider *provider);
+    
+private:
+    void apply() final;
+    void discard() final;
+    
+    void populateTargetInterfaces();
+    void populateTargetSpeeds();
+    
+    void setTargetInterface(const QString &newIface);
+    void setTargetSpeed(const QString &newSpeed);
+    
+    void updateAllowedControls();
+    
+    void setFromProvider();
+    
+    HostWidget *m_hostWidget = nullptr;
+    Utils::PathChooser *m_executableFileChooser = nullptr;
+    
+    QWidget *m_targetInterfaceWidget = nullptr;
+    QComboBox *m_targetInterfaceComboBox = nullptr;
+    QLabel *m_targetInterfaceSpeedLabel = nullptr;
+    QComboBox *m_targetInterfaceSpeedComboBox = nullptr;
+    
+    QLineEdit *m_pemicroDeviceLineEdit = nullptr;
+    QPlainTextEdit *m_additionalArgumentsTextEdit = nullptr;
+    QPlainTextEdit *m_initCommandsTextEdit = nullptr;
+    QPlainTextEdit *m_resetCommandsTextEdit = nullptr;
 };
 
 } // namespace Internal
