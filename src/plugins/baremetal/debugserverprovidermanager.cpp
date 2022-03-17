@@ -31,6 +31,7 @@
 #include "debugservers/gdb/openocdgdbserverprovider.h"
 #include "debugservers/gdb/stlinkutilgdbserverprovider.h"
 #include "debugservers/gdb/jlinkgdbserverprovider.h"
+#include "debugservers/gdb/pemicrogdbserverprovider.h"
 #include "debugservers/gdb/eblinkgdbserverprovider.h"
 
 // UVSC debug servers.
@@ -64,6 +65,7 @@ DebugServerProviderManager::DebugServerProviderManager()
     : m_configFile(Core::ICore::userResourcePath(fileNameKeyC))
     , m_factories({new GenericGdbServerProviderFactory,
                    new JLinkGdbServerProviderFactory,
+                   new PEMicroGdbServerProviderFactory,
                    new OpenOcdGdbServerProviderFactory,
                    new StLinkUtilGdbServerProviderFactory,
                    new EBlinkGdbServerProviderFactory,
