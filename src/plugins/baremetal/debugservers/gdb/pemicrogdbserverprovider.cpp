@@ -263,9 +263,9 @@ void PEMicroGdbServerProviderConfigWidget::populateTargetSpeeds()
 {
     m_targetInterfaceSpeedComboBox->addItem(tr("Default"));
     
-    const QStringList fixedSpeeds = {"1", "5", "10", "20", "30", "50", "100", "200", "300",
+    const QStringList fixedSpeeds = {"1", "5", "6", "10", "20", "30", "50", "60", "100", "200", "300",
                                      "400", "500", "600", "750", "800", "900", "1000", "1334",
-                                     "1600", "2000",  "2667" ,"3200", "4000", "4800", "5334",
+                                     "1600", "2000",  "2667" ,"3200", "4000", "4800", "5000",
                                      "6000", "8000", "9600", "12000", "15000", "20000", "25000",
                                      "30000", "40000", "50000"};
     for (const auto &fixedSpeed : fixedSpeeds)
