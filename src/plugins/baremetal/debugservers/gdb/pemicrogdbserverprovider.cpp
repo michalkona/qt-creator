@@ -94,7 +94,7 @@ CommandLine PEMicroGdbServerProvider::command() const
     if (startupMode() == StartupOnNetwork) {
         cmd.addArgs("-serverport=" + QString::number(channel().port()), CommandLine::Raw);
     }
-    
+
     cmd.addArgs("-startserver -singlesession", CommandLine::Raw);
 
     if (!m_pemicroTargetIface.isEmpty()) {
@@ -110,7 +110,7 @@ CommandLine PEMicroGdbServerProvider::command() const
     if (!m_additionalArguments.isEmpty()) {
         cmd.addArgs(m_additionalArguments, CommandLine::Raw);
     }
-    
+
     return cmd;
 }
 
@@ -124,14 +124,14 @@ bool PEMicroGdbServerProvider::isValid() const
 {
     if (!GdbServerProvider::isValid())
         return false;
-    
+
     const StartupMode m = startupMode();
-    
+
     if (m == StartupOnNetwork) {
         if (channel().host().isEmpty())
             return false;
     }
-    
+
     return true;
 }
 
@@ -150,7 +150,7 @@ bool PEMicroGdbServerProvider::fromMap(const QVariantMap &data)
 {
     if (!GdbServerProvider::fromMap(data))
         return false;
-    
+
     m_executableFile = FilePath::fromVariant(data.value(executableFileKeyC));
     m_pemicroDevice = data.value(pemicroDeviceKeyC).toString();
     m_additionalArguments = data.value(additionalArgumentsKeyC).toString();
@@ -163,7 +163,7 @@ bool PEMicroGdbServerProvider::operator==(const IDebugServerProvider &other) con
 {
     if (!GdbServerProvider::operator==(other))
         return false;
-    
+
     const auto p = static_cast<const PEMicroGdbServerProvider *>(&other);
     return m_executableFile == p->m_executableFile
            && m_additionalArguments == p->m_additionalArguments;
@@ -181,10 +181,10 @@ PEMicroGdbServerProviderConfigWidget::PEMicroGdbServerProviderConfigWidget(
     : GdbServerProviderConfigWidget(provider)
 {
     Q_ASSERT(provider);
-    
+
     m_hostWidget = new HostWidget(this);
     m_mainLayout->addRow(tr("Host:"), m_hostWidget);
-    
+
     m_executableFileChooser = new Utils::PathChooser;
     m_executableFileChooser->setExpectedKind(Utils::PathChooser::ExistingCommand);
     m_executableFileChooser->setCommandVersionArguments({"-showhardware"});
@@ -196,7 +196,7 @@ PEMicroGdbServerProviderConfigWidget::PEMicroGdbServerProviderConfigWidget(
         m_executableFileChooser->lineEdit()->setPlaceholderText("pegdbserver_power_console");
     }
     m_mainLayout->addRow(tr("Executable file:"), m_executableFileChooser);
-    
+
     // Target interface settings.
     m_targetInterfaceWidget = new QWidget(this);
     m_targetInterfaceComboBox = new QComboBox(m_targetInterfaceWidget);
@@ -209,29 +209,29 @@ PEMicroGdbServerProviderConfigWidget::PEMicroGdbServerProviderConfigWidget(
     targetInterfaceLayout->addWidget(m_targetInterfaceSpeedLabel);
     targetInterfaceLayout->addWidget(m_targetInterfaceSpeedComboBox);
     m_mainLayout->addRow(tr("Target interface:"), m_targetInterfaceWidget);
-    
+
     m_pemicroDeviceLineEdit = new QLineEdit(this);
     m_mainLayout->addRow(tr("Device:"), m_pemicroDeviceLineEdit);
     
     m_additionalArgumentsTextEdit = new QPlainTextEdit(this);
     m_mainLayout->addRow(tr("Additional arguments:"), m_additionalArgumentsTextEdit);
-    
+
     m_initCommandsTextEdit = new QPlainTextEdit(this);
     m_initCommandsTextEdit->setToolTip(defaultInitCommandsTooltip());
     m_mainLayout->addRow(tr("Init commands:"), m_initCommandsTextEdit);
     m_resetCommandsTextEdit = new QPlainTextEdit(this);
     m_resetCommandsTextEdit->setToolTip(defaultResetCommandsTooltip());
     m_mainLayout->addRow(tr("Reset commands:"), m_resetCommandsTextEdit);
-    
+
     populateTargetInterfaces();
     populateTargetSpeeds();
     addErrorLabel();
     setFromProvider();
-    
+
     const auto chooser = new VariableChooser(this);
     chooser->addSupportedWidget(m_initCommandsTextEdit);
     chooser->addSupportedWidget(m_resetCommandsTextEdit);
-    
+
     connect(m_hostWidget, &HostWidget::dataChanged,
             this, &GdbServerProviderConfigWidget::dirty);
     connect(m_executableFileChooser, &Utils::PathChooser::rawPathChanged,
@@ -248,7 +248,7 @@ PEMicroGdbServerProviderConfigWidget::PEMicroGdbServerProviderConfigWidget(
             this, &GdbServerProviderConfigWidget::dirty);
     connect(m_targetInterfaceSpeedComboBox, &QComboBox::currentTextChanged,
             this, &GdbServerProviderConfigWidget::dirty);
-    
+
     connect(m_targetInterfaceComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &PEMicroGdbServerProviderConfigWidget::updateAllowedControls);
     connect(m_targetInterfaceSpeedComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -259,7 +259,7 @@ void PEMicroGdbServerProviderConfigWidget::apply()
 {
     const auto p = static_cast<PEMicroGdbServerProvider *>(m_provider);
     Q_ASSERT(p);
-    
+
     p->setChannel(m_hostWidget->channel());
     p->m_executableFile = m_executableFileChooser->filePath();
     p->m_pemicroDevice = m_pemicroDeviceLineEdit->text();
@@ -287,9 +287,9 @@ void PEMicroGdbServerProviderConfigWidget::populateTargetInterfaces()
 void PEMicroGdbServerProviderConfigWidget::populateTargetSpeeds()
 {
     m_targetInterfaceSpeedComboBox->addItem(tr("Default"));
-    
-    const QStringList fixedSpeeds = {"1", "5", "6", "10", "20", "30", "50", "60", "100", "200", "300",
-                                     "400", "500", "600", "750", "800", "900", "1000", "1334",
+
+    const QStringList fixedSpeeds = {"1", "5", "6", "10", "20", "30", "50", "60", "100", "200",
+                                     "300", "400", "500", "600", "750", "800", "900", "1000", "1334",
                                      "1600", "2000",  "2667" ,"3200", "4000", "4800", "5000",
                                      "6000", "8000", "9600", "12000", "15000", "20000", "25000",
                                      "30000", "40000", "50000"};
@@ -334,7 +334,7 @@ void PEMicroGdbServerProviderConfigWidget::setFromProvider()
 {
     const auto p = static_cast<PEMicroGdbServerProvider *>(m_provider);
     Q_ASSERT(p);
-    
+
     const QSignalBlocker blocker(this);
     m_additionalArgumentsTextEdit->setPlainText(p->m_additionalArguments);
     m_executableFileChooser->setFilePath(p->m_executableFile);
@@ -342,10 +342,10 @@ void PEMicroGdbServerProviderConfigWidget::setFromProvider()
     m_initCommandsTextEdit->setPlainText(p->initCommands());
     m_pemicroDeviceLineEdit->setText(p->m_pemicroDevice);
     m_resetCommandsTextEdit->setPlainText(p->resetCommands());
-    
+
     setTargetInterface(p->m_pemicroTargetIface);
     setTargetSpeed(p->m_pemicroTargetIfaceSpeed);
-    
+
     updateAllowedControls();
 }
 
